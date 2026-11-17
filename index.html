@@ -1,350 +1,536 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Credential Splitter - แยก ชื่อ : รหัสผ่าน</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ตัวแยกรหัสและชื่อผู้ใช้ (Account Splitter)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-body: #0f172a;
-      --bg-card: #1e293b;
-      --bg-input: #0f172a;
-      --bg-table-head: #334155;
-      --bg-row-hover: #263349;
-      --border-color: #334155;
-      --text-main: #f8fafc;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-hover: #263449;
+      --border: #334155;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
       --primary: #3b82f6;
       --primary-hover: #2563eb;
-      --secondary: #10b981;
-      --secondary-hover: #059669;
+      --emerald: #10b981;
+      --emerald-hover: #059669;
+      --amber: #f59e0b;
       --danger: #ef4444;
-      --danger-hover: #dc2626;
-      --copy-btn: #334155;
-      --copy-btn-hover: #475569;
     }
 
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      max-width: 850px;
-      margin: 40px auto;
-      padding: 20px;
+      font-family: 'Kanit', sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 70%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
     }
 
     .container {
-      background: var(--bg-card);
-      padding: 28px;
-      border-radius: 14px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 820px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 1.75rem;
     }
 
-    h2 {
-      margin: 0 0 8px 0;
-      font-size: 24px;
-      color: var(--text-main);
+    header h1 {
+      font-size: 1.85rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.35rem;
     }
 
-    .subtitle {
-      font-size: 14px;
+    header p {
       color: var(--text-muted);
-      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 300;
     }
 
-    .badge {
-      background-color: var(--bg-input);
-      color: #60a5fa;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-      font-family: monospace;
+    .panel {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .input-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .input-header label {
+      font-weight: 500;
+      font-size: 1rem;
+      color: #e2e8f0;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 0.5rem;
     }
 
     textarea {
       width: 100%;
-      height: 160px;
-      padding: 14px;
-      background-color: var(--bg-input);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: monospace;
+      min-height: 110px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
       resize: vertical;
-      margin-bottom: 16px;
-      line-height: 1.5;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     textarea:focus {
-      outline: none;
       border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
     }
 
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 0.5rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid transparent;
       cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
     }
 
     .btn-primary {
-      background-color: var(--primary);
-      color: white;
-    }
-    .btn-primary:hover { background-color: var(--primary-hover); }
-
-    .btn-secondary {
-      background-color: var(--secondary);
-      color: white;
-    }
-    .btn-secondary:hover { background-color: var(--secondary-hover); }
-
-    .btn-danger {
-      background-color: var(--danger);
-      color: white;
-      margin-left: auto;
-    }
-    .btn-danger:hover { background-color: var(--danger-hover); }
-
-    .stats {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 12px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    th {
-      background-color: var(--bg-table-head);
-      color: var(--text-main);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tr:hover td {
-      background-color: var(--bg-row-hover);
-    }
-
-    .copy-btn {
-      background-color: var(--copy-btn);
-      color: var(--text-main);
-      padding: 6px 12px;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    .copy-btn:hover {
-      background-color: var(--copy-btn-hover);
-    }
-
-    .copy-btn.copied {
-      background-color: var(--secondary);
+      background: var(--primary);
       color: white;
     }
 
-    .cell-flex {
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-emerald {
+      background: var(--emerald);
+      color: white;
+    }
+
+    .btn-emerald:hover {
+      background: var(--emerald-hover);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #475569;
+    }
+
+    .btn-danger-outline {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .btn-danger-outline:hover {
+      background: rgba(239, 68, 68, 0.18);
+    }
+
+    .btn.copied {
+      background: var(--emerald) !important;
+      border-color: var(--emerald) !important;
+      color: #fff !important;
+    }
+
+    .results-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
-    .text-code {
-      font-family: monospace;
-      font-size: 14px;
-      word-break: break-all;
+    .badge {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 12px;
+    .account-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .account-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.15rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .account-card:hover {
+      border-color: #475569;
+    }
+
+    .account-index {
+      font-size: 0.8rem;
       color: var(--text-muted);
+      margin-bottom: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    @media (max-width: 600px) {
-      .btn-danger { margin-left: 0; }
+    .fields-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 640px) {
+      .fields-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field-box {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .field-label span.tag-user {
+      color: #60a5fa;
+      font-weight: 500;
+    }
+
+    .field-label span.tag-pass {
+      color: #34d399;
+      font-weight: 500;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .field-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: #f1f5f9;
+      word-break: break-all;
+      user-select: all;
+      flex: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-muted);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #10b981;
+      color: #fff;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน</h1>
+      <p>วางข้อความรูปแบบ <code>ชื่อ:รหัส</code> เพื่อแยกและกดคัดลอกได้ทันที (รองรับหลายบรรทัด)</p>
+    </header>
 
-<div class="container">
-  <header>
-    <h2>ตัวแยก ชื่อ : รหัสผ่าน</h2>
-    <p class="subtitle">รองรับตัวคั่น <span class="badge">:</span> <span class="badge">|</span> <span class="badge">;</span> อัตโนมัติ (ประมวลผลบนเบราว์เซอร์ 100% ปลอดภัย)</p>
-  </header>
-  
-  <textarea id="inputData" placeholder="วางข้อมูลที่นี่ (รองรับหลายบรรทัด):&#10;LiamAqua201331 : Generated$5764939&#10;UserTest02 | Pass@1234&#10;Admin99 ; Secret#999"></textarea>
-
-  <div class="btn-group">
-    <button class="btn-primary" onclick="parseData()">แยกข้อมูล</button>
-    <button class="btn-secondary" onclick="copyColumn('user', this)">คัดลอกชื่อทั้งหมด</button>
-    <button class="btn-secondary" onclick="copyColumn('pass', this)">คัดลอกรหัสทั้งหมด</button>
-    <button class="btn-danger" onclick="clearAll()">ล้างข้อมูล</button>
-  </div>
-
-  <div id="resultArea" style="display: none;">
-    <div class="stats" id="statsText">พบข้อมูลทั้งหมด 0 รายการ</div>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 50px;">#</th>
-            <th>ชื่อผู้ใช้ (Username)</th>
-            <th>รหัสผ่าน (Password)</th>
-          </tr>
-        </thead>
-        <tbody id="resultTableBody"></tbody>
-      </table>
+    <div class="panel">
+      <div class="input-header">
+        <label for="rawInput">ข้อความรหัส (Username:Password)</label>
+        <div class="action-group">
+          <button type="button" class="btn btn-outline" id="pasteBtn">📋 วางจากคลิปบอร์ด</button>
+          <button type="button" class="btn btn-danger-outline" id="clearBtn">🗑️ ล้างข้อมูล</button>
+        </div>
+      </div>
+      <textarea id="rawInput" placeholder="ตัวอย่าง: Haz3lDragonGold3n200:Generated$3216568">Haz3lDragonGold3n200:Generated$3216568</textarea>
     </div>
+
+    <div class="results-header">
+      <div style="display: flex; align-items: center; gap: 0.6rem;">
+        <h2 style="font-size: 1.15rem; font-weight: 500;">ผลลัพธ์ที่แยกแล้ว</h2>
+        <span class="badge" id="countBadge">1 รายการ</span>
+      </div>
+      <div class="action-group" id="bulkActions">
+        <button type="button" class="btn btn-outline" id="copyAllUsersBtn">คัดลอกชื่อทั้งหมด</button>
+        <button type="button" class="btn btn-outline" id="copyAllPassBtn">คัดลอกรหัสทั้งหมด</button>
+      </div>
+    </div>
+
+    <div id="accountList" class="account-list"></div>
   </div>
-</div>
 
-<footer>
-  ทำงานแบบ Client-Side ไม่มีการส่งข้อมูลไปยังเซิร์ฟเวอร์ใดๆ
-</footer>
+  <div id="toast" class="toast">คัดลอกเรียบร้อยแล้ว!</div>
 
-<script>
-  let parsedList = [];
+  <script>
+    const rawInput = document.getElementById('rawInput');
+    const accountList = document.getElementById('accountList');
+    const countBadge = document.getElementById('countBadge');
+    const pasteBtn = document.getElementById('pasteBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyAllUsersBtn = document.getElementById('copyAllUsersBtn');
+    const copyAllPassBtn = document.getElementById('copyAllPassBtn');
+    const bulkActions = document.getElementById('bulkActions');
+    const toast = document.getElementById('toast');
 
-  function parseData() {
-    const input = document.getElementById('inputData').value.trim();
-    const tbody = document.getElementById('resultTableBody');
-    const resultArea = document.getElementById('resultArea');
-    const statsText = document.getElementById('statsText');
-    
-    tbody.innerHTML = '';
-    parsedList = [];
+    let toastTimer = null;
+    let parsedAccounts = [];
 
-    if (!input) {
-      resultArea.style.display = 'none';
-      return;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1800);
     }
 
-    const lines = input.split('\n');
-    let count = 0;
+    async function copyText(text, btnElement, labelText = 'คัดลอกแล้ว!') {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+      }
 
-    lines.forEach(line => {
-      // ค้นหาตำแหน่งตัวคั่นตัวแรกที่เจอ (: หรือ | หรือ ;)
-      const match = line.match(/[:|;]/);
-      
-      if (match) {
-        const sepIndex = match.index;
-        const user = line.substring(0, sepIndex).trim();
-        const pass = line.substring(sepIndex + 1).trim();
+      showToast(`คัดลอก: ${text.length > 28 ? text.slice(0, 28) + '...' : text}`);
 
-        if (user || pass) {
-          count++;
-          parsedList.push({ user, pass });
+      if (btnElement) {
+        const originalHTML = btnElement.dataset.originalHtml || btnElement.innerHTML;
+        btnElement.dataset.originalHtml = originalHTML;
+        btnElement.classList.add('copied');
+        btnElement.innerHTML = `✅ ${labelText}`;
+        setTimeout(() => {
+          btnElement.classList.remove('copied');
+          btnElement.innerHTML = originalHTML;
+        }, 1200);
+      }
+    }
 
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td style="color: var(--text-muted);">${count}</td>
-            <td>
-              <div class="cell-flex">
-                <span class="text-code">${escapeHtml(user)}</span>
-                <button class="copy-btn" onclick="copyText(this, '${escapeJs(user)}')">คัดลอก</button>
+    function parseLine(line) {
+      const trimmed = line.trim();
+      if (!trimmed) return null;
+
+      const colonIndex = trimmed.indexOf(':');
+      if (colonIndex === -1) {
+        return { username: trimmed, password: '' };
+      }
+
+      const username = trimmed.slice(0, colonIndex).trim();
+      const rest = trimmed.slice(colonIndex + 1).trim();
+
+      // กรณีมีคุกกี้ต่อท้าย เช่น user:pass:_:_WARNING... ให้แยกเอาเฉพาะรหัสผ่านออกมาด้วย
+      const secondColon = rest.indexOf(':');
+      if (secondColon !== -1) {
+        const password = rest.slice(0, secondColon).trim();
+        const extra = rest.slice(secondColon + 1).trim();
+        return { username, password, extra };
+      }
+
+      return { username, password: rest };
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function render() {
+      const lines = rawInput.value.split(/\r?\n/);
+      parsedAccounts = lines.map(parseLine).filter(Boolean);
+
+      countBadge.textContent = `${parsedAccounts.length} รายการ`;
+      bulkActions.style.display = parsedAccounts.length > 1 ? 'flex' : 'none';
+
+      if (parsedAccounts.length === 0) {
+        accountList.innerHTML = `
+          <div class="empty-state">
+            ยังไม่มีข้อมูล กรุณาวางข้อความในช่องด้านบน เช่น <code>Haz3lDragonGold3n200:Generated$3216568</code>
+          </div>
+        `;
+        return;
+      }
+
+      accountList.innerHTML = parsedAccounts.map((acc, idx) => `
+        <div class="account-card">
+          ${parsedAccounts.length > 1 ? `<div class="account-index"><span>ลำดับที่ #${idx + 1}</span></div>` : ''}
+          <div class="fields-grid">
+            <div class="field-box">
+              <div class="field-label">
+                <span class="tag-user">👤 ชื่อผู้ใช้ (Username)</span>
               </div>
-            </td>
-            <td>
-              <div class="cell-flex">
-                <span class="text-code">${escapeHtml(pass)}</span>
-                <button class="copy-btn" onclick="copyText(this, '${escapeJs(pass)}')">คัดลอก</button>
+              <div class="field-row">
+                <div class="field-value">${escapeHtml(acc.username || '-')}</div>
+                <button type="button" class="btn btn-primary copy-item-btn" data-value="${escapeHtml(acc.username)}">
+                  📋 คัดลอกชื่อ
+                </button>
               </div>
-            </td>
-          `;
-          tbody.appendChild(row);
+            </div>
+
+            <div class="field-box">
+              <div class="field-label">
+                <span class="tag-pass">🔑 รหัสผ่าน (Password)</span>
+              </div>
+              <div class="field-row">
+                <div class="field-value">${escapeHtml(acc.password || '-')}</div>
+                <button type="button" class="btn btn-emerald copy-item-btn" data-value="${escapeHtml(acc.password)}">
+                  📋 คัดลอกรหัส
+                </button>
+              </div>
+            </div>
+          </div>
+          ${acc.extra ? `
+            <div class="field-box" style="margin-top: 0.75rem;">
+              <div class="field-label">
+                <span style="color: #fbbf24; font-weight: 500;">🍪 ข้อมูลเพิ่มเติม / Cookie</span>
+              </div>
+              <div class="field-row">
+                <div class="field-value" style="font-size: 0.85rem; max-height: 60px; overflow-y: auto;">${escapeHtml(acc.extra)}</div>
+                <button type="button" class="btn btn-outline copy-item-btn" data-value="${escapeHtml(acc.extra)}">
+                  📋 คัดลอก
+                </button>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.copy-item-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-value');
+          copyText(val, btn);
+        });
+      });
+    }
+
+    rawInput.addEventListener('input', render);
+
+    pasteBtn.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          rawInput.value = text;
+          render();
+          showToast('วางข้อมูลจากคลิปบอร์ดแล้ว!');
         }
+      } catch {
+        rawInput.focus();
+        showToast('กรุณากด Ctrl+V ในช่องข้อความ');
       }
     });
 
-    statsText.innerText = `พบข้อมูลทั้งหมด ${count} รายการ`;
-    resultArea.style.display = count > 0 ? 'block' : 'none';
-  }
-
-  function copyText(btn, text) {
-    navigator.clipboard.writeText(text).then(() => {
-      const originalText = btn.innerText;
-      btn.innerText = 'คัดลอกแล้ว!';
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.innerText = originalText;
-        btn.classList.remove('copied');
-      }, 1200);
+    clearBtn.addEventListener('click', () => {
+      rawInput.value = '';
+      render();
+      rawInput.focus();
     });
-  }
 
-  function copyColumn(type, btn) {
-    if (parsedList.length === 0) return;
-    const textToCopy = parsedList.map(item => type === 'user' ? item.user : item.pass).join('\n');
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      const originalText = btn.innerText;
-      btn.innerText = 'คัดลอกทั้งหมดแล้ว!';
-      setTimeout(() => {
-        btn.innerText = originalText;
-      }, 1500);
+    copyAllUsersBtn.addEventListener('click', () => {
+      const allUsers = parsedAccounts.map(a => a.username).filter(Boolean).join('\n');
+      if (allUsers) copyText(allUsers, copyAllUsersBtn);
     });
-  }
 
-  function clearAll() {
-    document.getElementById('inputData').value = '';
-    document.getElementById('resultTableBody').innerHTML = '';
-    document.getElementById('resultArea').style.display = 'none';
-    parsedList = [];
-  }
+    copyAllPassBtn.addEventListener('click', () => {
+      const allPass = parsedAccounts.map(a => a.password).filter(Boolean).join('\n');
+      if (allPass) copyText(allPass, copyAllPassBtn);
+    });
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  function escapeJs(text) {
-    return text.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-  }
-</script>
-
+    render();
+  </script>
 </body>
 </html>
