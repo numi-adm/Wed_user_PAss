@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ตัวแยกรหัสและส่งออก Sheet/CSV (Account Splitter)</title>
+  <title>ตัวแยกรหัส & แยก Cookie + ส่งออก Sheet/CSV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
 
     .container {
       width: 100%;
-      max-width: 960px;
+      max-width: 1020px;
     }
 
     header {
@@ -55,7 +55,7 @@
     header h1 {
       font-size: 1.85rem;
       font-weight: 600;
-      background: linear-gradient(135deg, #60a5fa, #34d399);
+      background: linear-gradient(135deg, #60a5fa, #34d399, #fbbf24);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 0.35rem;
@@ -67,14 +67,31 @@
       font-weight: 300;
     }
 
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 820px) {
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .panel {
       background: rgba(30, 41, 59, 0.85);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 1.5rem;
+      padding: 1.35rem;
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
       margin-bottom: 1.5rem;
+    }
+
+    .input-grid .panel {
+      margin-bottom: 0;
     }
 
     .input-header {
@@ -88,27 +105,36 @@
 
     .input-header label {
       font-weight: 500;
-      font-size: 1rem;
+      font-size: 0.98rem;
       color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sub-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
     }
 
     .action-group {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.45rem;
       flex-wrap: wrap;
     }
 
     textarea {
       width: 100%;
-      min-height: 120px;
+      min-height: 125px;
       background: #0f172a;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 0.9rem 1rem;
+      padding: 0.85rem 0.95rem;
       color: var(--text);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.92rem;
-      line-height: 1.6;
+      font-size: 0.86rem;
+      line-height: 1.55;
       resize: vertical;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -123,11 +149,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       font-family: 'Kanit', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.84rem;
       font-weight: 500;
-      padding: 0.5rem 0.95rem;
+      padding: 0.45rem 0.85rem;
       border-radius: 10px;
       border: 1px solid transparent;
       cursor: pointer;
@@ -230,7 +256,7 @@
     }
 
     .export-title p {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
     }
@@ -238,7 +264,7 @@
     .export-controls {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.55rem;
       flex-wrap: wrap;
     }
 
@@ -249,7 +275,7 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 0 0.65rem;
-      height: 38px;
+      height: 36px;
     }
 
     .filename-input-group input {
@@ -258,7 +284,7 @@
       color: var(--text);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
-      width: 95px;
+      width: 85px;
       outline: none;
       text-align: right;
     }
@@ -294,7 +320,7 @@
       width: 100%;
       border-collapse: collapse;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       text-align: left;
     }
 
@@ -315,7 +341,7 @@
       border-right: 1px solid rgba(51, 65, 85, 0.5);
       color: #e2e8f0;
       white-space: nowrap;
-      max-width: 220px;
+      max-width: 240px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -331,7 +357,7 @@
       border-radius: 10px;
       padding: 0.75rem 1rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #a7f3d0;
       max-height: 150px;
       overflow-y: auto;
@@ -353,8 +379,14 @@
       border: 1px solid rgba(59, 130, 246, 0.3);
       padding: 0.2rem 0.7rem;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 500;
+    }
+
+    .badge-cookie {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
 
     .account-list {
@@ -376,12 +408,14 @@
     }
 
     .account-index {
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       margin-bottom: 0.65rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
     }
 
     .fields-grid {
@@ -424,6 +458,11 @@
       font-weight: 500;
     }
 
+    .field-label span.tag-cookie {
+      color: #fbbf24;
+      font-weight: 500;
+    }
+
     .field-row {
       display: flex;
       align-items: center;
@@ -433,12 +472,21 @@
 
     .field-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: #f1f5f9;
       word-break: break-all;
       user-select: all;
       flex: 1;
+    }
+
+    .cookie-value {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      max-height: 68px;
+      overflow-y: auto;
+      padding-right: 0.3rem;
+      color: #fde68a;
     }
 
     .empty-state {
@@ -475,22 +523,41 @@
 <body>
   <div class="container">
     <header>
-      <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน + ส่งออก Sheet (CSV)</h1>
-      <p>วางข้อความรูปแบบ <code>ชื่อ:รหัส</code> หรือนำเข้าไฟล์ CSV เพื่อแยกและส่งออกตามรูปแบบมาตรฐาน</p>
+      <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน & Cookie + ส่งออก Sheet (CSV)</h1>
+      <p>แยก <code>ชื่อ:รหัส</code> และแยก Cookie ที่ติดกันตรง <code>_|WARNING:-DO-NOT-SHARE-THIS</code> ออกจากกันอัตโนมัติ</p>
     </header>
 
-    <!-- Input Panel -->
-    <div class="panel">
-      <div class="input-header">
-        <label for="rawInput">ข้อความรหัส (Username:Password หรือวางจาก CSV)</label>
-        <div class="action-group">
-          <input type="file" id="csvFileInput" accept=".csv,.txt" style="display: none;" />
-          <button type="button" class="btn btn-outline" id="importCsvBtn">📂 นำเข้าไฟล์ .CSV / .TXT</button>
-          <button type="button" class="btn btn-outline" id="pasteBtn">📋 วางจากคลิปบอร์ด</button>
-          <button type="button" class="btn btn-danger-outline" id="clearBtn">🗑️ ล้างข้อมูล</button>
+    <!-- Dual Input Grid: Account Input & Cookie Splitter Input -->
+    <div class="input-grid">
+      <!-- Box 1: Accounts (Username:Password or CSV) -->
+      <div class="panel">
+        <div class="input-header">
+          <label for="rawInput">👤 ช่องใส่รหัส (Username:Password / CSV)</label>
+          <div class="action-group">
+            <input type="file" id="csvFileInput" accept=".csv,.txt" style="display: none;" />
+            <button type="button" class="btn btn-outline" id="importCsvBtn">📂 นำเข้า .CSV</button>
+            <button type="button" class="btn btn-outline" id="pasteBtn">📋 วาง</button>
+            <button type="button" class="btn btn-danger-outline" id="clearBtn">🗑️ ล้าง</button>
+          </div>
         </div>
+        <div class="sub-hint">วาง <code>ชื่อ:รหัส</code> หรือ <code>ชื่อ:รหัส:_|WARNING...</code> (หากมีหลาย Cookie ติดกันจะแยกให้ด้วย)</div>
+        <textarea id="rawInput" placeholder="ตัวอย่าง:&#10;Haz3lDragonGold3n200:Generated$3216568&#10;HazelLavaMaster50:Generated$4578609">Haz3lDragonGold3n200:Generated$3216568
+HazelLavaMaster50:Generated$4578609</textarea>
       </div>
-      <textarea id="rawInput" placeholder="ตัวอย่าง: Haz3lDragonGold3n200:Generated$3216568">Haz3lDragonGold3n200:Generated$3216568</textarea>
+
+      <!-- Box 2: Dedicated Cookie Splitter (_|WARNING:-DO-NOT-SHARE-THIS) -->
+      <div class="panel">
+        <div class="input-header">
+          <label for="cookieInput">🍪 ช่องแยก Cookie (<code>_|WARNING:-DO-NOT-SHARE-THIS</code>)</label>
+          <div class="action-group">
+            <button type="button" class="btn btn-outline" id="pasteCookieBtn">📋 วาง Cookie</button>
+            <button type="button" class="btn btn-outline" id="dedupeCookieBtn" title="ลบ Cookie ที่ซ้ำกันออก เหลือเฉพาะอันที่ไม่ซ้ำ">✨ ลบซ้ำ</button>
+            <button type="button" class="btn btn-danger-outline" id="clearCookieBtn">🗑️ ล้าง</button>
+          </div>
+        </div>
+        <div class="sub-hint">วาง Cookie ที่ติดกันยาวๆ ระบบจะตัดแยกทุกจุดที่เจอ <code>_|WARNING:-DO-NOT-SHARE-THIS</code> และจับคู่ชื่ออัตโนมัติ</div>
+        <textarea id="cookieInput" placeholder="วาง _|WARNING:-DO-NOT-SHARE-THIS... ที่ติดกันหลายอันได้เลย">_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o</textarea>
+      </div>
     </div>
 
     <!-- Sheet / CSV Export Panel -->
@@ -542,11 +609,25 @@
       </div>
     </div>
 
+    <!-- Separated Cookies Section -->
+    <div id="cookieSection" style="margin-bottom: 1.75rem; display: none;">
+      <div class="results-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+          <h2 style="font-size: 1.15rem; font-weight: 500;">🍪 รายการ Cookie ที่แยกแล้ว (แยกตรง <code>_|WARNING:-DO-NOT-SHARE-THIS</code>)</h2>
+          <span class="badge badge-cookie" id="cookieCountBadge">0 Cookie</span>
+        </div>
+        <div class="action-group">
+          <button type="button" class="btn btn-amber" id="copyAllCookiesBtn">📋 คัดลอก Cookie ทั้งหมด (แยกบรรทัด)</button>
+        </div>
+      </div>
+      <div id="separatedCookieList" class="account-list"></div>
+    </div>
+
     <!-- Results Header -->
     <div class="results-header">
-      <div style="display: flex; align-items: center; gap: 0.6rem;">
-        <h2 style="font-size: 1.15rem; font-weight: 500;">ผลลัพธ์ที่แยกแล้ว</h2>
-        <span class="badge" id="countBadge">1 รายการ</span>
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <h2 style="font-size: 1.15rem; font-weight: 500;">👤 รายการบัญชีทั้งหมด (พร้อมส่งออก Sheet)</h2>
+        <span class="badge" id="countBadge">0 รายการ</span>
       </div>
       <div class="action-group" id="bulkActions">
         <button type="button" class="btn btn-outline" id="copyAllUsersBtn">คัดลอกชื่อทั้งหมด</button>
@@ -561,16 +642,25 @@
 
   <script>
     const CSV_HEADER = 'username,password,cookie,status,created,checked,note';
+    const COOKIE_MARKER = '_|WARNING:-DO-NOT-SHARE-THIS';
 
     const rawInput = document.getElementById('rawInput');
+    const cookieInput = document.getElementById('cookieInput');
     const accountList = document.getElementById('accountList');
+    const separatedCookieList = document.getElementById('separatedCookieList');
+    const cookieSection = document.getElementById('cookieSection');
     const countBadge = document.getElementById('countBadge');
+    const cookieCountBadge = document.getElementById('cookieCountBadge');
     const pasteBtn = document.getElementById('pasteBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const pasteCookieBtn = document.getElementById('pasteCookieBtn');
+    const dedupeCookieBtn = document.getElementById('dedupeCookieBtn');
+    const clearCookieBtn = document.getElementById('clearCookieBtn');
     const importCsvBtn = document.getElementById('importCsvBtn');
     const csvFileInput = document.getElementById('csvFileInput');
     const copyAllUsersBtn = document.getElementById('copyAllUsersBtn');
     const copyAllPassBtn = document.getElementById('copyAllPassBtn');
+    const copyAllCookiesBtn = document.getElementById('copyAllCookiesBtn');
     const bulkActions = document.getElementById('bulkActions');
     const downloadCsvBtn = document.getElementById('downloadCsvBtn');
     const copyCsvBtn = document.getElementById('copyCsvBtn');
@@ -584,6 +674,7 @@
 
     let toastTimer = null;
     let parsedAccounts = [];
+    let standaloneCookies = [];
 
     function showToast(message) {
       toast.textContent = message;
@@ -607,8 +698,8 @@
       }
 
       const previewMsg = text.includes('\n')
-        ? `คัดลอก ${parsedAccounts.length} รายการเรียบร้อย!`
-        : `คัดลอก: ${text.length > 28 ? text.slice(0, 28) + '...' : text}`;
+        ? `คัดลอกหลายรายการเรียบร้อย!`
+        : `คัดลอก: ${text.length > 34 ? text.slice(0, 34) + '...' : text}`;
       showToast(previewMsg);
 
       if (btnElement) {
@@ -623,84 +714,202 @@
       }
     }
 
-    function parseLine(line) {
-      const trimmed = line.trim();
-      if (!trimmed) return null;
+    /**
+     * แยกข้อความที่มี _|WARNING:-DO-NOT-SHARE-THIS ติดกันหลายอันออกเป็น Array ของแต่ละ Cookie
+     */
+    function splitCookiesByWarning(str) {
+      if (!str || !str.includes(COOKIE_MARKER)) return [];
+      const parts = str
+        .split(/(?=_\|\s*WARNING:-DO-NOT-SHARE-THIS)/g)
+        .map(s => s.trim())
+        .filter(s => s.startsWith('_|'));
+      return parts;
+    }
 
-      // ข้ามบรรทัด Header ของ CSV หากผู้ใช้เผลอวางติดมา
-      if (trimmed.toLowerCase() === CSV_HEADER) {
-        return null;
+    /**
+     * ถอดรหัสชื่อผู้ใช้ (uname) และ User ID (uid) จากภายใน .ROBLOSECURITY Cookie อัตโนมัติ (ถ้ามี)
+     */
+    function extractCookieMeta(cookieStr) {
+      try {
+        const pipeIdx = cookieStr.indexOf('|_');
+        if (pipeIdx === -1) return { uname: '', uid: '' };
+        const body = cookieStr.slice(pipeIdx + 2);
+        const dotIdx = body.indexOf('.');
+        const b64Part = dotIdx !== -1 ? body.slice(0, dotIdx) : body;
+        const normalized = b64Part.replace(/-/g, '+').replace(/_/g, '/');
+        const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4);
+        const raw = atob(padded);
+
+        let uname = '';
+        let uid = '';
+
+        const unameIdx = raw.indexOf('uname');
+        if (unameIdx !== -1 && unameIdx + 7 < raw.length) {
+          const len = raw.charCodeAt(unameIdx + 6);
+          const candidate = raw.slice(unameIdx + 7, unameIdx + 7 + len);
+          if (/^[A-Za-z0-9_]+$/.test(candidate)) {
+            uname = candidate;
+          }
+        }
+
+        const uidIdx = raw.indexOf('uid');
+        if (uidIdx !== -1 && uidIdx + 5 < raw.length) {
+          const len = raw.charCodeAt(uidIdx + 4);
+          const candidate = raw.slice(uidIdx + 5, uidIdx + 5 + len);
+          if (/^[0-9]+$/.test(candidate)) {
+            uid = candidate;
+          }
+        }
+
+        return { uname, uid };
+      } catch {
+        return { uname: '', uid: '' };
       }
+    }
 
-      // กรณีวางบรรทัดที่เป็นรูปแบบ CSV (เช่น L0ganHer0Rift2009,Generated$3596848,,,,,)
-      if (trimmed.includes(',') && !trimmed.includes(':')) {
-        const parts = trimmed.split(',');
-        return {
-          username: (parts[0] || '').trim(),
-          password: (parts[1] || '').trim(),
-          cookie: (parts[2] || '').trim(),
-          status: (parts[3] || '').trim(),
-          created: (parts[4] || '').trim(),
-          checked: (parts[5] || '').trim(),
-          note: parts.slice(6).join(',').trim()
-        };
-      }
+    /**
+     * แปลงบรรทัดจากช่องใส่รหัส (รองรับทั้ง user:pass, CSV, และกรณีวาง Cookie ติดกันในช่องแรก)
+     */
+    function parseAccountInput(rawText) {
+      const results = [];
+      const rawLines = rawText.split(/\r?\n/);
 
-      const colonIndex = trimmed.indexOf(':');
-      if (colonIndex === -1) {
-        return {
-          username: trimmed,
-          password: '',
+      for (const line of rawLines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (trimmed.toLowerCase() === CSV_HEADER) continue;
+
+        // กรณีขึ้นต้นด้วย _|WARNING:-DO-NOT-SHARE-THIS โดยตรงในช่องแรก
+        if (trimmed.startsWith(COOKIE_MARKER)) {
+          const cookies = splitCookiesByWarning(trimmed);
+          for (const ck of cookies) {
+            const meta = extractCookieMeta(ck);
+            results.push({
+              username: meta.uname || '',
+              password: '',
+              cookie: ck,
+              status: '',
+              created: '',
+              checked: '',
+              note: ''
+            });
+          }
+          continue;
+        }
+
+        // กรณีเป็นบรรทัด CSV เช่น user,pass,cookie,status,created,checked,note
+        if (trimmed.includes(',') && (!trimmed.includes(':') || trimmed.indexOf(',') < trimmed.indexOf(':'))) {
+          const parts = trimmed.split(',');
+          const rawCookieField = (parts[2] || '').trim();
+          const extraCookies = splitCookiesByWarning(rawCookieField);
+
+          results.push({
+            username: (parts[0] || '').trim(),
+            password: (parts[1] || '').trim(),
+            cookie: extraCookies.length > 0 ? extraCookies[0] : rawCookieField,
+            status: (parts[3] || '').trim(),
+            created: (parts[4] || '').trim(),
+            checked: (parts[5] || '').trim(),
+            note: parts.slice(6).join(',').trim()
+          });
+
+          // ถ้าในช่อง cookie ของ CSV มี cookie ติดกันหลายอัน ให้แยกออกมาด้วย
+          for (let i = 1; i < extraCookies.length; i++) {
+            const meta = extractCookieMeta(extraCookies[i]);
+            results.push({
+              username: meta.uname || '',
+              password: '',
+              cookie: extraCookies[i],
+              status: '',
+              created: '',
+              checked: '',
+              note: ''
+            });
+          }
+          continue;
+        }
+
+        // กรณี user:pass หรือ user:pass:_|WARNING...
+        const colonIndex = trimmed.indexOf(':');
+        if (colonIndex === -1) {
+          results.push({
+            username: trimmed,
+            password: '',
+            cookie: '',
+            status: '',
+            created: '',
+            checked: '',
+            note: ''
+          });
+          continue;
+        }
+
+        const username = trimmed.slice(0, colonIndex).trim();
+        const rest = trimmed.slice(colonIndex + 1).trim();
+
+        // เช็คว่าใน rest มี _|WARNING:-DO-NOT-SHARE-THIS หรือไม่
+        const cookieStartIdx = rest.indexOf(COOKIE_MARKER);
+        if (cookieStartIdx !== -1) {
+          let passwordPart = rest.slice(0, cookieStartIdx).trim();
+          if (passwordPart.endsWith(':')) {
+            passwordPart = passwordPart.slice(0, -1).trim();
+          }
+          const cookiePart = rest.slice(cookieStartIdx).trim();
+          const cookies = splitCookiesByWarning(cookiePart);
+
+          results.push({
+            username,
+            password: passwordPart,
+            cookie: cookies[0] || cookiePart,
+            status: '',
+            created: '',
+            checked: '',
+            note: ''
+          });
+
+          for (let i = 1; i < cookies.length; i++) {
+            const meta = extractCookieMeta(cookies[i]);
+            results.push({
+              username: meta.uname || '',
+              password: '',
+              cookie: cookies[i],
+              status: '',
+              created: '',
+              checked: '',
+              note: ''
+            });
+          }
+          continue;
+        }
+
+        const secondColon = rest.indexOf(':');
+        if (secondColon !== -1) {
+          const password = rest.slice(0, secondColon).trim();
+          const cookie = rest.slice(secondColon + 1).trim();
+          results.push({
+            username,
+            password,
+            cookie,
+            status: '',
+            created: '',
+            checked: '',
+            note: ''
+          });
+          continue;
+        }
+
+        results.push({
+          username,
+          password: rest,
           cookie: '',
           status: '',
           created: '',
           checked: '',
           note: ''
-        };
+        });
       }
 
-      const username = trimmed.slice(0, colonIndex).trim();
-      const rest = trimmed.slice(colonIndex + 1).trim();
-
-      // กรณีมีคุกกี้ต่อท้าย เช่น user:pass:_:_WARNING...
-      const secondColon = rest.indexOf(':');
-      if (secondColon !== -1) {
-        const password = rest.slice(0, secondColon).trim();
-        const cookie = rest.slice(secondColon + 1).trim();
-        return {
-          username,
-          password,
-          cookie,
-          status: '',
-          created: '',
-          checked: '',
-          note: ''
-        };
-      }
-
-      // กรณีวาง user:pass,,,,, ที่มีคอมม่าต่อท้าย
-      if (rest.includes(',')) {
-        const parts = rest.split(',');
-        return {
-          username,
-          password: (parts[0] || '').trim(),
-          cookie: (parts[1] || '').trim(),
-          status: (parts[2] || '').trim(),
-          created: (parts[3] || '').trim(),
-          checked: (parts[4] || '').trim(),
-          note: parts.slice(5).join(',').trim()
-        };
-      }
-
-      return {
-        username,
-        password: rest,
-        cookie: '',
-        status: '',
-        created: '',
-        checked: '',
-        note: ''
-      };
+      return results;
     }
 
     function escapeCsvField(val) {
@@ -756,8 +965,72 @@
     }
 
     function render() {
-      const lines = rawInput.value.split(/\r?\n/);
-      parsedAccounts = lines.map(parseLine).filter(Boolean);
+      const accountsFromInput = parseAccountInput(rawInput.value);
+      const rawCookiesFromBox = splitCookiesByWarning(cookieInput.value);
+
+      standaloneCookies = rawCookiesFromBox.map((ck, index) => {
+        const meta = extractCookieMeta(ck);
+        return {
+          index: index + 1,
+          cookie: ck,
+          uname: meta.uname,
+          uid: meta.uid
+        };
+      });
+
+      // จับคู่ Cookie จากช่องที่ 2 เข้ากับรายการบัญชี (จับคู่ตามชื่อผู้ใช้ก่อน หรือจับคู่ตามลำดับถ้าไม่มีชื่อ)
+      const usedCookieIndices = new Set();
+
+      for (const acc of accountsFromInput) {
+        if (acc.cookie) continue;
+        if (acc.username) {
+          const matchIdx = standaloneCookies.findIndex(
+            (c, idx) => !usedCookieIndices.has(idx) && c.uname && c.uname.toLowerCase() === acc.username.toLowerCase()
+          );
+          if (matchIdx !== -1) {
+            acc.cookie = standaloneCookies[matchIdx].cookie;
+            usedCookieIndices.add(matchIdx);
+          }
+        }
+      }
+
+      // หากยังมี Cookie ที่ไม่ได้จับคู่ และมีบัญชีที่ยังไม่มี Cookie (และ Cookie นั้นไม่มี uname หรือชื่อไม่ตรง)
+      for (let i = 0; i < standaloneCookies.length; i++) {
+        if (usedCookieIndices.has(i)) continue;
+        const ckObj = standaloneCookies[i];
+
+        // ถ้า Cookie มีชื่อผู้ใช้ที่ตรงกับบัญชีที่มีอยู่แล้ว แต่บัญชีนั้นมี Cookie ไปแล้ว (เช่น กรณีวาง Cookie ซ้ำ 3 อัน)
+        // ให้เพิ่มเป็นแถวใหม่ หรือถ้ายังไม่มีบัญชีชื่อนั้นเลยก็เพิ่มเข้าในรายการ
+        resultsPushCookie(accountsFromInput, ckObj);
+        usedCookieIndices.add(i);
+      }
+
+      parsedAccounts = accountsFromInput;
+
+      // Render ส่วนแสดง Cookie ที่แยกออกมาจาก _|WARNING:-DO-NOT-SHARE-THIS
+      if (standaloneCookies.length > 0) {
+        cookieSection.style.display = 'block';
+        cookieCountBadge.textContent = `แยกได้ ${standaloneCookies.length} Cookie`;
+        separatedCookieList.innerHTML = standaloneCookies.map((item) => `
+          <div class="account-card">
+            <div class="account-index">
+              <span>🍪 Cookie ชิ้นที่ #${item.index}</span>
+              ${item.uname ? `<span style="color: #60a5fa;">👤 ตรวจพบชื่อใน Cookie: <strong>${escapeHtml(item.uname)}</strong> ${item.uid ? `(UID: ${escapeHtml(item.uid)})` : ''}</span>` : ''}
+            </div>
+            <div class="field-box">
+              <div class="field-row">
+                <div class="field-value cookie-value">${escapeHtml(item.cookie)}</div>
+                <button type="button" class="btn btn-amber copy-item-btn" data-value="${escapeHtml(item.cookie)}">
+                  📋 คัดลอก Cookie #${item.index}
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        cookieSection.style.display = 'none';
+        separatedCookieList.innerHTML = '';
+      }
 
       countBadge.textContent = `${parsedAccounts.length} รายการ`;
       bulkActions.style.display = parsedAccounts.length > 1 ? 'flex' : 'none';
@@ -768,7 +1041,7 @@
           <td style="color: var(--text-muted);">${i + 1}</td>
           <td>${escapeHtml(acc.username)}</td>
           <td>${escapeHtml(acc.password)}</td>
-          <td>${escapeHtml(acc.cookie)}</td>
+          <td title="${escapeHtml(acc.cookie)}">${escapeHtml(acc.cookie)}</td>
           <td>${escapeHtml(acc.status)}</td>
           <td>${escapeHtml(acc.created)}</td>
           <td>${escapeHtml(acc.checked)}</td>
@@ -781,55 +1054,57 @@
       if (parsedAccounts.length === 0) {
         accountList.innerHTML = `
           <div class="empty-state">
-            ยังไม่มีข้อมูล กรุณาวางข้อความในช่องด้านบน เช่น <code>Haz3lDragonGold3n200:Generated$3216568</code>
+            ยังไม่มีข้อมูล กรุณาวางรหัสหรือวาง Cookie ในช่องด้านบน
           </div>
         `;
-        return;
-      }
-
-      accountList.innerHTML = parsedAccounts.map((acc, idx) => `
-        <div class="account-card">
-          ${parsedAccounts.length > 1 ? `<div class="account-index"><span>ลำดับที่ #${idx + 1}</span></div>` : ''}
-          <div class="fields-grid">
-            <div class="field-box">
-              <div class="field-label">
-                <span class="tag-user">👤 ชื่อผู้ใช้ (Username)</span>
+      } else {
+        accountList.innerHTML = parsedAccounts.map((acc, idx) => `
+          <div class="account-card">
+            <div class="account-index">
+              <span>ลำดับที่ #${idx + 1}</span>
+              ${acc.cookie ? `<span style="color: #fbbf24;">🍪 มี Cookie พร้อมส่งออก</span>` : ''}
+            </div>
+            <div class="fields-grid">
+              <div class="field-box">
+                <div class="field-label">
+                  <span class="tag-user">👤 ชื่อผู้ใช้ (Username)</span>
+                </div>
+                <div class="field-row">
+                  <div class="field-value">${escapeHtml(acc.username || '-')}</div>
+                  <button type="button" class="btn btn-primary copy-item-btn" data-value="${escapeHtml(acc.username)}">
+                    📋 คัดลอกชื่อ
+                  </button>
+                </div>
               </div>
-              <div class="field-row">
-                <div class="field-value">${escapeHtml(acc.username || '-')}</div>
-                <button type="button" class="btn btn-primary copy-item-btn" data-value="${escapeHtml(acc.username)}">
-                  📋 คัดลอกชื่อ
-                </button>
+
+              <div class="field-box">
+                <div class="field-label">
+                  <span class="tag-pass">🔑 รหัสผ่าน (Password)</span>
+                </div>
+                <div class="field-row">
+                  <div class="field-value">${escapeHtml(acc.password || '-')}</div>
+                  <button type="button" class="btn btn-emerald copy-item-btn" data-value="${escapeHtml(acc.password)}">
+                    📋 คัดลอกรหัส
+                  </button>
+                </div>
               </div>
             </div>
-
-            <div class="field-box">
-              <div class="field-label">
-                <span class="tag-pass">🔑 รหัสผ่าน (Password)</span>
+            ${acc.cookie ? `
+              <div class="field-box" style="margin-top: 0.75rem;">
+                <div class="field-label">
+                  <span class="tag-cookie">🍪 Cookie (แยกจาก _|WARNING:-DO-NOT-SHARE-THIS)</span>
+                </div>
+                <div class="field-row">
+                  <div class="field-value cookie-value">${escapeHtml(acc.cookie)}</div>
+                  <button type="button" class="btn btn-amber copy-item-btn" data-value="${escapeHtml(acc.cookie)}">
+                    📋 คัดลอก Cookie
+                  </button>
+                </div>
               </div>
-              <div class="field-row">
-                <div class="field-value">${escapeHtml(acc.password || '-')}</div>
-                <button type="button" class="btn btn-emerald copy-item-btn" data-value="${escapeHtml(acc.password)}">
-                  📋 คัดลอกรหัส
-                </button>
-              </div>
-            </div>
+            ` : ''}
           </div>
-          ${acc.cookie ? `
-            <div class="field-box" style="margin-top: 0.75rem;">
-              <div class="field-label">
-                <span style="color: #fbbf24; font-weight: 500;">🍪 Cookie</span>
-              </div>
-              <div class="field-row">
-                <div class="field-value" style="font-size: 0.85rem; max-height: 60px; overflow-y: auto;">${escapeHtml(acc.cookie)}</div>
-                <button type="button" class="btn btn-outline copy-item-btn" data-value="${escapeHtml(acc.cookie)}">
-                  📋 คัดลอก Cookie
-                </button>
-              </div>
-            </div>
-          ` : ''}
-        </div>
-      `).join('');
+        `).join('');
+      }
 
       document.querySelectorAll('.copy-item-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -839,7 +1114,25 @@
       });
     }
 
+    function resultsPushCookie(accountsList, ckObj) {
+      // หากมีบัญชีชื่อเดียวกันอยู่แล้ว ให้คัดลอกรหัสผ่านมาใส่คู่กับ Cookie ชิ้นนี้ด้วย หรือสร้างแถวใหม่
+      const existingAcc = ckObj.uname
+        ? accountsList.find(a => a.username && a.username.toLowerCase() === ckObj.uname.toLowerCase())
+        : null;
+
+      accountsList.push({
+        username: ckObj.uname || (existingAcc ? existingAcc.username : ''),
+        password: existingAcc ? existingAcc.password : '',
+        cookie: ckObj.cookie,
+        status: '',
+        created: '',
+        checked: '',
+        note: ''
+      });
+    }
+
     rawInput.addEventListener('input', render);
+    cookieInput.addEventListener('input', render);
 
     pasteBtn.addEventListener('click', async () => {
       try {
@@ -847,7 +1140,7 @@
         if (text) {
           rawInput.value = text;
           render();
-          showToast('วางข้อมูลจากคลิปบอร์ดแล้ว!');
+          showToast('วางข้อมูลรหัสจากคลิปบอร์ดแล้ว!');
         }
       } catch {
         rawInput.focus();
@@ -859,6 +1152,34 @@
       rawInput.value = '';
       render();
       rawInput.focus();
+    });
+
+    pasteCookieBtn.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          cookieInput.value = text;
+          render();
+          showToast('วางและแยก Cookie เรียบร้อยแล้ว!');
+        }
+      } catch {
+        cookieInput.focus();
+        showToast('กรุณากด Ctrl+V ในช่อง Cookie');
+      }
+    });
+
+    dedupeCookieBtn.addEventListener('click', () => {
+      const cookies = splitCookiesByWarning(cookieInput.value);
+      const unique = [...new Set(cookies)];
+      cookieInput.value = unique.join('\n');
+      render();
+      showToast(`ลบ Cookie ซ้ำเรียบร้อย! (เหลือ ${unique.length} รายการ)`);
+    });
+
+    clearCookieBtn.addEventListener('click', () => {
+      cookieInput.value = '';
+      render();
+      cookieInput.focus();
     });
 
     importCsvBtn.addEventListener('click', () => {
@@ -896,7 +1217,7 @@
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      const name = (csvFilename.value || 'accounts').trim().replace(/\.csv$/i, '');
+      const name = (csvFilename.value || '11').trim().replace(/\.csv$/i, '');
       a.href = url;
       a.download = `${name}.csv`;
       document.body.appendChild(a);
@@ -936,6 +1257,11 @@
     copyAllPassBtn.addEventListener('click', () => {
       const allPass = parsedAccounts.map(a => a.password).filter(Boolean).join('\n');
       if (allPass) copyText(allPass, copyAllPassBtn);
+    });
+
+    copyAllCookiesBtn.addEventListener('click', () => {
+      const allCookies = standaloneCookies.map(c => c.cookie).join('\n');
+      if (allCookies) copyText(allCookies, copyAllCookiesBtn);
     });
 
     render();
