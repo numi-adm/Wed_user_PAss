@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ตัวแยกรหัสและชื่อผู้ใช้ (Account Splitter)</title>
+  <title>ตัวแยกรหัสและส่งออก Sheet/CSV (Account Splitter)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -20,6 +20,9 @@
       --emerald: #10b981;
       --emerald-hover: #059669;
       --amber: #f59e0b;
+      --amber-hover: #d97706;
+      --purple: #8b5cf6;
+      --purple-hover: #7c3aed;
       --danger: #ef4444;
     }
 
@@ -41,7 +44,7 @@
 
     .container {
       width: 100%;
-      max-width: 820px;
+      max-width: 960px;
     }
 
     header {
@@ -92,11 +95,12 @@
     .action-group {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     textarea {
       width: 100%;
-      min-height: 110px;
+      min-height: 120px;
       background: #0f172a;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -154,6 +158,26 @@
       background: var(--emerald-hover);
     }
 
+    .btn-purple {
+      background: var(--purple);
+      color: white;
+    }
+
+    .btn-purple:hover {
+      background: var(--purple-hover);
+    }
+
+    .btn-amber {
+      background: var(--amber);
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .btn-amber:hover {
+      background: var(--amber-hover);
+      color: white;
+    }
+
     .btn-outline {
       background: rgba(255, 255, 255, 0.04);
       border-color: var(--border);
@@ -179,6 +203,139 @@
       background: var(--emerald) !important;
       border-color: var(--emerald) !important;
       color: #fff !important;
+    }
+
+    /* Export Panel */
+    .export-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .export-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .export-title h3 {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .export-title p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .export-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .filename-input-group {
+      display: flex;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 0.65rem;
+      height: 38px;
+    }
+
+    .filename-input-group input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      width: 95px;
+      outline: none;
+      text-align: right;
+    }
+
+    .filename-input-group span {
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-left: 2px;
+    }
+
+    .csv-preview-box {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .csv-preview-box.active {
+      display: block;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0f172a;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    table.sheet-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      text-align: left;
+    }
+
+    table.sheet-table th {
+      background: #1e293b;
+      color: #60a5fa;
+      padding: 0.6rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      font-weight: 600;
+    }
+
+    table.sheet-table td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      border-right: 1px solid rgba(51, 65, 85, 0.5);
+      color: #e2e8f0;
+      white-space: nowrap;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    table.sheet-table tr:hover td {
+      background: rgba(59, 130, 246, 0.06);
+    }
+
+    .raw-csv-text {
+      margin-top: 0.75rem;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #a7f3d0;
+      max-height: 150px;
+      overflow-y: auto;
+      white-space: pre;
     }
 
     .results-header {
@@ -318,14 +475,17 @@
 <body>
   <div class="container">
     <header>
-      <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน</h1>
-      <p>วางข้อความรูปแบบ <code>ชื่อ:รหัส</code> เพื่อแยกและกดคัดลอกได้ทันที (รองรับหลายบรรทัด)</p>
+      <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน + ส่งออก Sheet (CSV)</h1>
+      <p>วางข้อความรูปแบบ <code>ชื่อ:รหัส</code> หรือนำเข้าไฟล์ CSV เพื่อแยกและส่งออกตามรูปแบบมาตรฐาน</p>
     </header>
 
+    <!-- Input Panel -->
     <div class="panel">
       <div class="input-header">
-        <label for="rawInput">ข้อความรหัส (Username:Password)</label>
+        <label for="rawInput">ข้อความรหัส (Username:Password หรือวางจาก CSV)</label>
         <div class="action-group">
+          <input type="file" id="csvFileInput" accept=".csv,.txt" style="display: none;" />
+          <button type="button" class="btn btn-outline" id="importCsvBtn">📂 นำเข้าไฟล์ .CSV / .TXT</button>
           <button type="button" class="btn btn-outline" id="pasteBtn">📋 วางจากคลิปบอร์ด</button>
           <button type="button" class="btn btn-danger-outline" id="clearBtn">🗑️ ล้างข้อมูล</button>
         </div>
@@ -333,6 +493,56 @@
       <textarea id="rawInput" placeholder="ตัวอย่าง: Haz3lDragonGold3n200:Generated$3216568">Haz3lDragonGold3n200:Generated$3216568</textarea>
     </div>
 
+    <!-- Sheet / CSV Export Panel -->
+    <div class="panel">
+      <div class="export-bar">
+        <div class="export-title">
+          <h3>📊 ส่งออกเป็น Sheet / CSV</h3>
+          <p>รูปแบบคอลัมน์: username,password,cookie,status,created,checked,note</p>
+        </div>
+        <div class="export-controls">
+          <div class="filename-input-group" title="ตั้งชื่อไฟล์ CSV">
+            <input type="text" id="csvFilename" value="11" placeholder="ชื่อไฟล์" />
+            <span>.csv</span>
+          </div>
+          <button type="button" class="btn btn-emerald" id="downloadCsvBtn">
+            💾 ดาวน์โหลด .CSV
+          </button>
+          <button type="button" class="btn btn-purple" id="copyCsvBtn" title="คัดลอกข้อความรูปแบบ CSV">
+            📋 คัดลอก CSV
+          </button>
+          <button type="button" class="btn btn-amber" id="copySheetBtn" title="คัดลอกไปวางใน Google Sheets / Excel ได้ทันที">
+            📑 คัดลอกวาง Google Sheets
+          </button>
+          <button type="button" class="btn btn-outline" id="togglePreviewBtn">
+            👁️ ดูตัวอย่างตาราง
+          </button>
+        </div>
+      </div>
+
+      <div id="csvPreviewBox" class="csv-preview-box">
+        <div class="table-wrapper">
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>username</th>
+                <th>password</th>
+                <th>cookie</th>
+                <th>status</th>
+                <th>created</th>
+                <th>checked</th>
+                <th>note</th>
+              </tr>
+            </thead>
+            <tbody id="sheetTableBody"></tbody>
+          </table>
+        </div>
+        <div class="raw-csv-text" id="rawCsvPreview"></div>
+      </div>
+    </div>
+
+    <!-- Results Header -->
     <div class="results-header">
       <div style="display: flex; align-items: center; gap: 0.6rem;">
         <h2 style="font-size: 1.15rem; font-weight: 500;">ผลลัพธ์ที่แยกแล้ว</h2>
@@ -350,14 +560,26 @@
   <div id="toast" class="toast">คัดลอกเรียบร้อยแล้ว!</div>
 
   <script>
+    const CSV_HEADER = 'username,password,cookie,status,created,checked,note';
+
     const rawInput = document.getElementById('rawInput');
     const accountList = document.getElementById('accountList');
     const countBadge = document.getElementById('countBadge');
     const pasteBtn = document.getElementById('pasteBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const importCsvBtn = document.getElementById('importCsvBtn');
+    const csvFileInput = document.getElementById('csvFileInput');
     const copyAllUsersBtn = document.getElementById('copyAllUsersBtn');
     const copyAllPassBtn = document.getElementById('copyAllPassBtn');
     const bulkActions = document.getElementById('bulkActions');
+    const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+    const copyCsvBtn = document.getElementById('copyCsvBtn');
+    const copySheetBtn = document.getElementById('copySheetBtn');
+    const togglePreviewBtn = document.getElementById('togglePreviewBtn');
+    const csvPreviewBox = document.getElementById('csvPreviewBox');
+    const sheetTableBody = document.getElementById('sheetTableBody');
+    const rawCsvPreview = document.getElementById('rawCsvPreview');
+    const csvFilename = document.getElementById('csvFilename');
     const toast = document.getElementById('toast');
 
     let toastTimer = null;
@@ -369,7 +591,7 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         toast.classList.remove('show');
-      }, 1800);
+      }, 2000);
     }
 
     async function copyText(text, btnElement, labelText = 'คัดลอกแล้ว!') {
@@ -384,7 +606,10 @@
         document.body.removeChild(temp);
       }
 
-      showToast(`คัดลอก: ${text.length > 28 ? text.slice(0, 28) + '...' : text}`);
+      const previewMsg = text.includes('\n')
+        ? `คัดลอก ${parsedAccounts.length} รายการเรียบร้อย!`
+        : `คัดลอก: ${text.length > 28 ? text.slice(0, 28) + '...' : text}`;
+      showToast(previewMsg);
 
       if (btnElement) {
         const originalHTML = btnElement.dataset.originalHtml || btnElement.innerHTML;
@@ -402,27 +627,127 @@
       const trimmed = line.trim();
       if (!trimmed) return null;
 
+      // ข้ามบรรทัด Header ของ CSV หากผู้ใช้เผลอวางติดมา
+      if (trimmed.toLowerCase() === CSV_HEADER) {
+        return null;
+      }
+
+      // กรณีวางบรรทัดที่เป็นรูปแบบ CSV (เช่น L0ganHer0Rift2009,Generated$3596848,,,,,)
+      if (trimmed.includes(',') && !trimmed.includes(':')) {
+        const parts = trimmed.split(',');
+        return {
+          username: (parts[0] || '').trim(),
+          password: (parts[1] || '').trim(),
+          cookie: (parts[2] || '').trim(),
+          status: (parts[3] || '').trim(),
+          created: (parts[4] || '').trim(),
+          checked: (parts[5] || '').trim(),
+          note: parts.slice(6).join(',').trim()
+        };
+      }
+
       const colonIndex = trimmed.indexOf(':');
       if (colonIndex === -1) {
-        return { username: trimmed, password: '' };
+        return {
+          username: trimmed,
+          password: '',
+          cookie: '',
+          status: '',
+          created: '',
+          checked: '',
+          note: ''
+        };
       }
 
       const username = trimmed.slice(0, colonIndex).trim();
       const rest = trimmed.slice(colonIndex + 1).trim();
 
-      // กรณีมีคุกกี้ต่อท้าย เช่น user:pass:_:_WARNING... ให้แยกเอาเฉพาะรหัสผ่านออกมาด้วย
+      // กรณีมีคุกกี้ต่อท้าย เช่น user:pass:_:_WARNING...
       const secondColon = rest.indexOf(':');
       if (secondColon !== -1) {
         const password = rest.slice(0, secondColon).trim();
-        const extra = rest.slice(secondColon + 1).trim();
-        return { username, password, extra };
+        const cookie = rest.slice(secondColon + 1).trim();
+        return {
+          username,
+          password,
+          cookie,
+          status: '',
+          created: '',
+          checked: '',
+          note: ''
+        };
       }
 
-      return { username, password: rest };
+      // กรณีวาง user:pass,,,,, ที่มีคอมม่าต่อท้าย
+      if (rest.includes(',')) {
+        const parts = rest.split(',');
+        return {
+          username,
+          password: (parts[0] || '').trim(),
+          cookie: (parts[1] || '').trim(),
+          status: (parts[2] || '').trim(),
+          created: (parts[3] || '').trim(),
+          checked: (parts[4] || '').trim(),
+          note: parts.slice(5).join(',').trim()
+        };
+      }
+
+      return {
+        username,
+        password: rest,
+        cookie: '',
+        status: '',
+        created: '',
+        checked: '',
+        note: ''
+      };
+    }
+
+    function escapeCsvField(val) {
+      const str = String(val ?? '');
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    }
+
+    function buildCsvContent() {
+      const rows = [CSV_HEADER];
+      for (const acc of parsedAccounts) {
+        const row = [
+          escapeCsvField(acc.username),
+          escapeCsvField(acc.password),
+          escapeCsvField(acc.cookie),
+          escapeCsvField(acc.status),
+          escapeCsvField(acc.created),
+          escapeCsvField(acc.checked),
+          escapeCsvField(acc.note)
+        ].join(',');
+        rows.push(row);
+      }
+      return rows.join('\r\n');
+    }
+
+    function buildTsvForGoogleSheets() {
+      const header = ['username', 'password', 'cookie', 'status', 'created', 'checked', 'note'].join('\t');
+      const rows = [header];
+      for (const acc of parsedAccounts) {
+        const row = [
+          acc.username || '',
+          acc.password || '',
+          acc.cookie || '',
+          acc.status || '',
+          acc.created || '',
+          acc.checked || '',
+          acc.note || ''
+        ].join('\t');
+        rows.push(row);
+      }
+      return rows.join('\r\n');
     }
 
     function escapeHtml(str) {
-      return str
+      return String(str ?? '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
@@ -436,6 +761,22 @@
 
       countBadge.textContent = `${parsedAccounts.length} รายการ`;
       bulkActions.style.display = parsedAccounts.length > 1 ? 'flex' : 'none';
+
+      // อัปเดตตารางตัวอย่าง CSV
+      sheetTableBody.innerHTML = parsedAccounts.map((acc, i) => `
+        <tr>
+          <td style="color: var(--text-muted);">${i + 1}</td>
+          <td>${escapeHtml(acc.username)}</td>
+          <td>${escapeHtml(acc.password)}</td>
+          <td>${escapeHtml(acc.cookie)}</td>
+          <td>${escapeHtml(acc.status)}</td>
+          <td>${escapeHtml(acc.created)}</td>
+          <td>${escapeHtml(acc.checked)}</td>
+          <td>${escapeHtml(acc.note)}</td>
+        </tr>
+      `).join('');
+
+      rawCsvPreview.textContent = buildCsvContent();
 
       if (parsedAccounts.length === 0) {
         accountList.innerHTML = `
@@ -474,15 +815,15 @@
               </div>
             </div>
           </div>
-          ${acc.extra ? `
+          ${acc.cookie ? `
             <div class="field-box" style="margin-top: 0.75rem;">
               <div class="field-label">
-                <span style="color: #fbbf24; font-weight: 500;">🍪 ข้อมูลเพิ่มเติม / Cookie</span>
+                <span style="color: #fbbf24; font-weight: 500;">🍪 Cookie</span>
               </div>
               <div class="field-row">
-                <div class="field-value" style="font-size: 0.85rem; max-height: 60px; overflow-y: auto;">${escapeHtml(acc.extra)}</div>
-                <button type="button" class="btn btn-outline copy-item-btn" data-value="${escapeHtml(acc.extra)}">
-                  📋 คัดลอก
+                <div class="field-value" style="font-size: 0.85rem; max-height: 60px; overflow-y: auto;">${escapeHtml(acc.cookie)}</div>
+                <button type="button" class="btn btn-outline copy-item-btn" data-value="${escapeHtml(acc.cookie)}">
+                  📋 คัดลอก Cookie
                 </button>
               </div>
             </div>
@@ -518,6 +859,73 @@
       rawInput.value = '';
       render();
       rawInput.focus();
+    });
+
+    importCsvBtn.addEventListener('click', () => {
+      csvFileInput.click();
+    });
+
+    csvFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const baseName = file.name.replace(/\.[^/.]+$/, '');
+      if (baseName) {
+        csvFilename.value = baseName;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target.result || '';
+        const current = rawInput.value.trim();
+        rawInput.value = current ? `${current}\n${content.trim()}` : content.trim();
+        render();
+        showToast(`นำเข้าไฟล์ ${file.name} เรียบร้อยแล้ว!`);
+        csvFileInput.value = '';
+      };
+      reader.readAsText(file, 'utf-8');
+    });
+
+    downloadCsvBtn.addEventListener('click', () => {
+      if (parsedAccounts.length === 0) {
+        showToast('ยังไม่มีข้อมูลสำหรับส่งออก!');
+        return;
+      }
+
+      const csvContent = buildCsvContent();
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const name = (csvFilename.value || 'accounts').trim().replace(/\.csv$/i, '');
+      a.href = url;
+      a.download = `${name}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`ดาวน์โหลดไฟล์ ${name}.csv เรียบร้อย!`);
+    });
+
+    copyCsvBtn.addEventListener('click', () => {
+      if (parsedAccounts.length === 0) {
+        showToast('ยังไม่มีข้อมูลสำหรับคัดลอก!');
+        return;
+      }
+      copyText(buildCsvContent(), copyCsvBtn, 'คัดลอก CSV แล้ว!');
+    });
+
+    copySheetBtn.addEventListener('click', () => {
+      if (parsedAccounts.length === 0) {
+        showToast('ยังไม่มีข้อมูลสำหรับคัดลอก!');
+        return;
+      }
+      copyText(buildTsvForGoogleSheets(), copySheetBtn, 'พร้อมวางใน Sheet!');
+    });
+
+    togglePreviewBtn.addEventListener('click', () => {
+      csvPreviewBox.classList.toggle('active');
+      const isOpen = csvPreviewBox.classList.contains('active');
+      togglePreviewBtn.innerHTML = isOpen ? '🙈 ซ่อนตัวอย่างตาราง' : '👁️ ดูตัวอย่างตาราง';
     });
 
     copyAllUsersBtn.addEventListener('click', () => {
