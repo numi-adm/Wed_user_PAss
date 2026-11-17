@@ -44,7 +44,7 @@
 
     .container {
       width: 100%;
-      max-width: 1020px;
+      max-width: 1060px;
     }
 
     header {
@@ -74,7 +74,7 @@
       margin-bottom: 1.5rem;
     }
 
-    @media (max-width: 820px) {
+    @media (max-width: 860px) {
       .input-grid {
         grid-template-columns: 1fr;
       }
@@ -133,7 +133,7 @@
       padding: 0.85rem 0.95rem;
       color: var(--text);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       line-height: 1.55;
       resize: vertical;
       outline: none;
@@ -312,7 +312,7 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       background: #0f172a;
-      max-height: 260px;
+      max-height: 280px;
       overflow-y: auto;
     }
 
@@ -333,6 +333,7 @@
       position: sticky;
       top: 0;
       font-weight: 600;
+      z-index: 2;
     }
 
     table.sheet-table td {
@@ -524,7 +525,7 @@
   <div class="container">
     <header>
       <h1>ตัวแยกชื่อผู้ใช้ & รหัสผ่าน & Cookie + ส่งออก Sheet (CSV)</h1>
-      <p>แยก <code>ชื่อ:รหัส</code> และแยก Cookie ที่ติดกันตรง <code>_|WARNING:-DO-NOT-SHARE-THIS</code> ออกจากกันอัตโนมัติ</p>
+      <p>แยก <code>ชื่อ:รหัส</code> และสกัดเฉพาะ Cookie ล้วนๆ (ตัดข้อความ <code>","WORK",...</code> จากไฟล์ CSV ออกให้อัตโนมัติ)</p>
     </header>
 
     <!-- Dual Input Grid: Account Input & Cookie Splitter Input -->
@@ -535,12 +536,12 @@
           <label for="rawInput">👤 ช่องใส่รหัส (Username:Password / CSV)</label>
           <div class="action-group">
             <input type="file" id="csvFileInput" accept=".csv,.txt" style="display: none;" />
-            <button type="button" class="btn btn-outline" id="importCsvBtn">📂 นำเข้า .CSV</button>
+            <button type="button" class="btn btn-primary" id="importCsvBtn">📂 เปิด Sheet รหัส (.CSV)</button>
             <button type="button" class="btn btn-outline" id="pasteBtn">📋 วาง</button>
             <button type="button" class="btn btn-danger-outline" id="clearBtn">🗑️ ล้าง</button>
           </div>
         </div>
-        <div class="sub-hint">วาง <code>ชื่อ:รหัส</code> หรือ <code>ชื่อ:รหัส:_|WARNING...</code> (หากมีหลาย Cookie ติดกันจะแยกให้ด้วย)</div>
+        <div class="sub-hint">วาง <code>ชื่อ:รหัส</code> หรือเปิดไฟล์ <code>.csv</code> เพื่อแยกรหัสและเตรียมส่งออก</div>
         <textarea id="rawInput" placeholder="ตัวอย่าง:&#10;Haz3lDragonGold3n200:Generated$3216568&#10;HazelLavaMaster50:Generated$4578609">Haz3lDragonGold3n200:Generated$3216568
 HazelLavaMaster50:Generated$4578609</textarea>
       </div>
@@ -548,15 +549,18 @@ HazelLavaMaster50:Generated$4578609</textarea>
       <!-- Box 2: Dedicated Cookie Splitter (_|WARNING:-DO-NOT-SHARE-THIS) -->
       <div class="panel">
         <div class="input-header">
-          <label for="cookieInput">🍪 ช่องแยก Cookie (<code>_|WARNING:-DO-NOT-SHARE-THIS</code>)</label>
+          <label for="cookieInput">🍪 ช่องแยก Cookie / เปิด Sheet ของ Cookie</label>
           <div class="action-group">
-            <button type="button" class="btn btn-outline" id="pasteCookieBtn">📋 วาง Cookie</button>
-            <button type="button" class="btn btn-outline" id="dedupeCookieBtn" title="ลบ Cookie ที่ซ้ำกันออก เหลือเฉพาะอันที่ไม่ซ้ำ">✨ ลบซ้ำ</button>
+            <input type="file" id="cookieSheetFileInput" accept=".csv,.txt" style="display: none;" />
+            <button type="button" class="btn btn-amber" id="openCookieSheetBtn">📂 เปิด Sheet ของ Cookie (.CSV)</button>
+            <button type="button" class="btn btn-outline" id="pasteCookieBtn">📋 วาง</button>
+            <button type="button" class="btn btn-outline" id="cleanCookieBoxBtn" title="ล้างข้อความส่วนเกิน เช่น WORK, วันที่, ชื่อรหัส ออกจากช่องข้อความ">🧹 ล้างข้อความเกิน</button>
+            <button type="button" class="btn btn-outline" id="dedupeCookieBtn" title="ลบ Cookie ที่ซ้ำกันออก">✨ ลบซ้ำ</button>
             <button type="button" class="btn btn-danger-outline" id="clearCookieBtn">🗑️ ล้าง</button>
           </div>
         </div>
-        <div class="sub-hint">วาง Cookie ที่ติดกันยาวๆ ระบบจะตัดแยกทุกจุดที่เจอ <code>_|WARNING:-DO-NOT-SHARE-THIS</code> และจับคู่ชื่ออัตโนมัติ</div>
-        <textarea id="cookieInput" placeholder="วาง _|WARNING:-DO-NOT-SHARE-THIS... ที่ติดกันหลายอันได้เลย">_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o</textarea>
+        <div class="sub-hint">เปิดไฟล์ Sheet ที่มี Cookie หรือวางข้อมูลจาก CSV ได้เลย ระบบจะตัด <code>","WORK","วันที่","ดึงจากหน้าต่างในแอป"</code> ออกให้อัตโนมัติ</div>
+        <textarea id="cookieInput" placeholder="วาง Cookie หรือกด '📂 เปิด Sheet ของ Cookie (.CSV)' ด้านบนได้เลย">_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEQAhoGCAIQBBgBIhwKBGR1aWQSFDE0Mjk0MzQzODQ3NjAxMjIwMjU2IhoKBXVuYW1lEhFIYXplbExhdmFNYXN0ZXI1MCISCgN1aWQSCzEwMDk4NDUxMzQ1KAM.6JzcEIJVXprx61wCs-JBmHVk_YMYCKAPJTHdXNyoKO0Y694ICERRQEtZFKD22z6Dff7M36IELts8ZRI9K0L_JCF1ccgF_E29oGWMlOuISk_6r-wlvLfAJY6rKirFQV6UCUc3JQEt_BcNeRSm8-Po_juW2gN5EZ7488omovQbQTa4ridvgdtTPhg59K3TiO_GczpP7k4idZZlXOJmSxrc_FnfwkF8j6MAfse1agRcc8HXxbpudx1OPsjvwae6P5amFvv9MzePfleKP31571vVyHqqsnFw2k4aXZJLyCkjIQdf8qSsbdANt_BHmEP13n2CVtue9MuVsvpG5eV327sYftFUinzDIlY6F456xTQmhG9hpfIrkdmSmFaEfIQC1j7RqqpXaHsp2BD1dlPjyNRHa-9tP0oN9PTM35vnwTfJsME_BbUc__yh4Pb0OyCpjX_tSWNw3u3YVf_4nuTD2AGI9r9uF1xSzeO2YJiE5eR6cdn5NIvshNQLdHTzp4rnzbSGJD_LpjqhmiPObibT7n2MeVOfwyPXB2SwH0ZxRtbSFJ5jP0GnVAtcB-Pty2VQg6folLtVxqF9ODOwjYgBaigVlOI5VNBt-ywZfcj8tXWmv0HXhdC7ohKWmPdoPsUEL_cEKVOaFHpAVGvnj4IDwsR0Zt6Zu0H6NypjZs3F6QpY_5vGLQ9qgiC0fFm5gx1pPpGpDwUeQEMn5GdGzYuSmb8C2NiS5t7KuSVPYWK8jkvJPbxcjQOcZKg3aBa1oA3IVcZjxMj1-YcDK77qqjG0rYNZbyWLvLKdJEkofKbmcalWbtx3IFgnC-dtSAR6y0A-FVKitv7TV6GEWnM4RMCCwlaWkM9jZxHpoHmfJrIdi0sZctPfnEvgGdiv-D_6i8v1aECsfDvJQ5QjIAHfI6VN4QH1P0oggnt146Tjaia5-Q6CQ3Ks-_VRbxcyjwa7F9buBb4U.ivznTrwwGG1hCPs9CjN2meUsw-o</textarea>
       </div>
     </div>
 
@@ -564,7 +568,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
     <div class="panel">
       <div class="export-bar">
         <div class="export-title">
-          <h3>📊 ส่งออกเป็น Sheet / CSV</h3>
+          <h3>📊 จัดการตาราง Sheet / ส่งออก CSV</h3>
           <p>รูปแบบคอลัมน์: username,password,cookie,status,created,checked,note</p>
         </div>
         <div class="export-controls">
@@ -582,7 +586,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
             📑 คัดลอกวาง Google Sheets
           </button>
           <button type="button" class="btn btn-outline" id="togglePreviewBtn">
-            👁️ ดูตัวอย่างตาราง
+            👁️ ดูตัวอย่างตารางรวม
           </button>
         </div>
       </div>
@@ -609,17 +613,44 @@ HazelLavaMaster50:Generated$4578609</textarea>
       </div>
     </div>
 
-    <!-- Separated Cookies Section -->
+    <!-- Separated Cookies Section + Cookie Sheet View -->
     <div id="cookieSection" style="margin-bottom: 1.75rem; display: none;">
       <div class="results-header">
         <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-          <h2 style="font-size: 1.15rem; font-weight: 500;">🍪 รายการ Cookie ที่แยกแล้ว (แยกตรง <code>_|WARNING:-DO-NOT-SHARE-THIS</code>)</h2>
+          <h2 style="font-size: 1.15rem; font-weight: 500;">🍪 รายการ Cookie ที่สกัดแล้ว (สะอาด ไม่มี <code>","WORK",...</code> ปน)</h2>
           <span class="badge badge-cookie" id="cookieCountBadge">0 Cookie</span>
         </div>
         <div class="action-group">
+          <button type="button" class="btn btn-outline" id="toggleCookieSheetViewBtn">📊 เปิดดูตาราง Sheet ของ Cookie</button>
+          <button type="button" class="btn btn-emerald" id="downloadCookieCsvBtn">💾 ดาวน์โหลด Sheet Cookie (.CSV)</button>
           <button type="button" class="btn btn-amber" id="copyAllCookiesBtn">📋 คัดลอก Cookie ทั้งหมด (แยกบรรทัด)</button>
         </div>
       </div>
+
+      <!-- Cookie Sheet Table Preview -->
+      <div id="cookieSheetPreviewBox" class="panel" style="display: none; margin-bottom: 1rem;">
+        <div class="input-header" style="margin-bottom: 0.6rem;">
+          <label>📊 ตาราง Sheet ของ Cookie</label>
+          <div class="action-group">
+            <button type="button" class="btn btn-purple" id="copyCookieSheetTsvBtn">📑 คัดลอกตาราง Cookie วาง Google Sheets</button>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="sheet-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>username (จาก Cookie/Sheet)</th>
+                <th>password</th>
+                <th>cookie (สะอาด)</th>
+                <th>คัดลอก</th>
+              </tr>
+            </thead>
+            <tbody id="cookieSheetTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
       <div id="separatedCookieList" class="account-list"></div>
     </div>
 
@@ -653,7 +684,10 @@ HazelLavaMaster50:Generated$4578609</textarea>
     const cookieCountBadge = document.getElementById('cookieCountBadge');
     const pasteBtn = document.getElementById('pasteBtn');
     const clearBtn = document.getElementById('clearBtn');
+    const openCookieSheetBtn = document.getElementById('openCookieSheetBtn');
+    const cookieSheetFileInput = document.getElementById('cookieSheetFileInput');
     const pasteCookieBtn = document.getElementById('pasteCookieBtn');
+    const cleanCookieBoxBtn = document.getElementById('cleanCookieBoxBtn');
     const dedupeCookieBtn = document.getElementById('dedupeCookieBtn');
     const clearCookieBtn = document.getElementById('clearCookieBtn');
     const importCsvBtn = document.getElementById('importCsvBtn');
@@ -661,6 +695,11 @@ HazelLavaMaster50:Generated$4578609</textarea>
     const copyAllUsersBtn = document.getElementById('copyAllUsersBtn');
     const copyAllPassBtn = document.getElementById('copyAllPassBtn');
     const copyAllCookiesBtn = document.getElementById('copyAllCookiesBtn');
+    const toggleCookieSheetViewBtn = document.getElementById('toggleCookieSheetViewBtn');
+    const cookieSheetPreviewBox = document.getElementById('cookieSheetPreviewBox');
+    const cookieSheetTableBody = document.getElementById('cookieSheetTableBody');
+    const copyCookieSheetTsvBtn = document.getElementById('copyCookieSheetTsvBtn');
+    const downloadCookieCsvBtn = document.getElementById('downloadCookieCsvBtn');
     const bulkActions = document.getElementById('bulkActions');
     const downloadCsvBtn = document.getElementById('downloadCsvBtn');
     const copyCsvBtn = document.getElementById('copyCsvBtn');
@@ -682,7 +721,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
         toast.classList.remove('show');
-      }, 2000);
+      }, 2200);
     }
 
     async function copyText(text, btnElement, labelText = 'คัดลอกแล้ว!') {
@@ -715,19 +754,65 @@ HazelLavaMaster50:Generated$4578609</textarea>
     }
 
     /**
-     * แยกข้อความที่มี _|WARNING:-DO-NOT-SHARE-THIS ติดกันหลายอันออกเป็น Array ของแต่ละ Cookie
+     * ทำความสะอาด Cookie เดี่ยวๆ โดยตัดเอาเฉพาะตัว Cookie ล้วนๆ
+     * ตัดส่วนเกินจากไฟล์ CSV เช่น ","WORK","2026-11-17...","ดึงจากหน้าต่างในแอป" และบรรทัดถัดไปออกทั้งหมด
      */
-    function splitCookiesByWarning(str) {
-      if (!str || !str.includes(COOKIE_MARKER)) return [];
-      const parts = str
-        .split(/(?=_\|\s*WARNING:-DO-NOT-SHARE-THIS)/g)
-        .map(s => s.trim())
-        .filter(s => s.startsWith('_|'));
-      return parts;
+    function sanitizeSingleCookie(rawChunk) {
+      if (!rawChunk) return '';
+      const startIdx = rawChunk.indexOf(COOKIE_MARKER);
+      if (startIdx === -1) return '';
+      const fromWarning = rawChunk.slice(startIdx);
+      // Cookie ของ Roblox จะจบลงทันทีเมื่อเจอเครื่องหมายคำพูด ("), ลูกน้ำ (,), การขึ้นบรรทัดใหม่ หรือช่องว่าง
+      const clean = fromWarning.split(/["',\r\n\t ]/)[0].trim();
+      return clean;
     }
 
     /**
-     * ถอดรหัสชื่อผู้ใช้ (uname) และ User ID (uid) จากภายใน .ROBLOSECURITY Cookie อัตโนมัติ (ถ้ามี)
+     * แยกข้อความที่มี _|WARNING:-DO-NOT-SHARE-THIS ติดกันหลายอัน หรือปนมากับไฟล์ CSV
+     * ออกเป็น Array ของแต่ละ Cookie ที่สะอาด 100%
+     */
+    function splitCookiesByWarning(str) {
+      if (!str || !str.includes(COOKIE_MARKER)) return [];
+      const rawParts = str.split(/(?=_\|\s*WARNING:-DO-NOT-SHARE-THIS)/g);
+      const cleaned = [];
+      for (const part of rawParts) {
+        const clean = sanitizeSingleCookie(part);
+        if (clean && clean.startsWith('_|')) {
+          cleaned.push(clean);
+        }
+      }
+      return cleaned;
+    }
+
+    /**
+     * แยกคอลัมน์จากบรรทัด CSV ที่อาจมีเครื่องหมายคำพูดครอบ เช่น "user","pass","cookie","WORK",...
+     */
+    function parseCsvRow(line) {
+      const cols = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === ',' && !inQuotes) {
+          cols.push(cur.trim());
+          cur = '';
+        } else {
+          cur += ch;
+        }
+      }
+      cols.push(cur.trim());
+      return cols;
+    }
+
+    /**
+     * ถอดรหัสชื่อผู้ใช้ (uname) และ User ID (uid) จากภายใน .ROBLOSECURITY Cookie อัตโนมัติ
      */
     function extractCookieMeta(cookieStr) {
       try {
@@ -768,7 +853,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
     }
 
     /**
-     * แปลงบรรทัดจากช่องใส่รหัส (รองรับทั้ง user:pass, CSV, และกรณีวาง Cookie ติดกันในช่องแรก)
+     * แปลงบรรทัดจากช่องใส่รหัส (รองรับทั้ง user:pass, CSV ที่มีหรือไม่มี "", และกรณีวาง Cookie ติดกัน)
      */
     function parseAccountInput(rawText) {
       const results = [];
@@ -777,7 +862,11 @@ HazelLavaMaster50:Generated$4578609</textarea>
       for (const line of rawLines) {
         const trimmed = line.trim();
         if (!trimmed) continue;
-        if (trimmed.toLowerCase() === CSV_HEADER) continue;
+
+        const unquotedHeaderCheck = trimmed.replace(/"/g, '').toLowerCase();
+        if (unquotedHeaderCheck === CSV_HEADER || unquotedHeaderCheck.startsWith('username,password,cookie')) {
+          continue;
+        }
 
         // กรณีขึ้นต้นด้วย _|WARNING:-DO-NOT-SHARE-THIS โดยตรงในช่องแรก
         if (trimmed.startsWith(COOKIE_MARKER)) {
@@ -797,23 +886,26 @@ HazelLavaMaster50:Generated$4578609</textarea>
           continue;
         }
 
-        // กรณีเป็นบรรทัด CSV เช่น user,pass,cookie,status,created,checked,note
-        if (trimmed.includes(',') && (!trimmed.includes(':') || trimmed.indexOf(',') < trimmed.indexOf(':'))) {
-          const parts = trimmed.split(',');
+        // กรณีเป็นบรรทัด CSV เช่น "user","pass","cookie","WORK",... หรือ user,pass,,,,,
+        if (trimmed.includes(',') && (trimmed.startsWith('"') || !trimmed.includes(':') || trimmed.indexOf(',') < trimmed.indexOf(':'))) {
+          const parts = parseCsvRow(trimmed);
           const rawCookieField = (parts[2] || '').trim();
           const extraCookies = splitCookiesByWarning(rawCookieField);
 
+          const cleanFirstCookie = extraCookies.length > 0
+            ? extraCookies[0]
+            : (rawCookieField.includes(COOKIE_MARKER) ? sanitizeSingleCookie(rawCookieField) : rawCookieField);
+
           results.push({
-            username: (parts[0] || '').trim(),
-            password: (parts[1] || '').trim(),
-            cookie: extraCookies.length > 0 ? extraCookies[0] : rawCookieField,
+            username: (parts[0] || '').replace(/^"+|"+$/g, '').trim(),
+            password: (parts[1] || '').replace(/^"+|"+$/g, '').trim(),
+            cookie: cleanFirstCookie,
             status: (parts[3] || '').trim(),
             created: (parts[4] || '').trim(),
             checked: (parts[5] || '').trim(),
-            note: parts.slice(6).join(',').trim()
+            note: (parts[6] || '').trim()
           });
 
-          // ถ้าในช่อง cookie ของ CSV มี cookie ติดกันหลายอัน ให้แยกออกมาด้วย
           for (let i = 1; i < extraCookies.length; i++) {
             const meta = extractCookieMeta(extraCookies[i]);
             results.push({
@@ -833,7 +925,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
         const colonIndex = trimmed.indexOf(':');
         if (colonIndex === -1) {
           results.push({
-            username: trimmed,
+            username: trimmed.replace(/^"+|"+$/g, ''),
             password: '',
             cookie: '',
             status: '',
@@ -844,23 +936,23 @@ HazelLavaMaster50:Generated$4578609</textarea>
           continue;
         }
 
-        const username = trimmed.slice(0, colonIndex).trim();
+        const username = trimmed.slice(0, colonIndex).replace(/^"+|"+$/g, '').trim();
         const rest = trimmed.slice(colonIndex + 1).trim();
 
-        // เช็คว่าใน rest มี _|WARNING:-DO-NOT-SHARE-THIS หรือไม่
         const cookieStartIdx = rest.indexOf(COOKIE_MARKER);
         if (cookieStartIdx !== -1) {
           let passwordPart = rest.slice(0, cookieStartIdx).trim();
           if (passwordPart.endsWith(':')) {
             passwordPart = passwordPart.slice(0, -1).trim();
           }
+          passwordPart = passwordPart.replace(/^"+|"+$/g, '');
           const cookiePart = rest.slice(cookieStartIdx).trim();
           const cookies = splitCookiesByWarning(cookiePart);
 
           results.push({
             username,
             password: passwordPart,
-            cookie: cookies[0] || cookiePart,
+            cookie: cookies[0] || sanitizeSingleCookie(cookiePart),
             status: '',
             created: '',
             checked: '',
@@ -884,8 +976,8 @@ HazelLavaMaster50:Generated$4578609</textarea>
 
         const secondColon = rest.indexOf(':');
         if (secondColon !== -1) {
-          const password = rest.slice(0, secondColon).trim();
-          const cookie = rest.slice(secondColon + 1).trim();
+          const password = rest.slice(0, secondColon).replace(/^"+|"+$/g, '').trim();
+          const cookie = sanitizeSingleCookie(rest.slice(secondColon + 1).trim());
           results.push({
             username,
             password,
@@ -900,7 +992,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
 
         results.push({
           username,
-          password: rest,
+          password: rest.replace(/^"+|"+$/g, ''),
           cookie: '',
           status: '',
           created: '',
@@ -920,9 +1012,9 @@ HazelLavaMaster50:Generated$4578609</textarea>
       return str;
     }
 
-    function buildCsvContent() {
+    function buildCsvContent(list = parsedAccounts) {
       const rows = [CSV_HEADER];
-      for (const acc of parsedAccounts) {
+      for (const acc of list) {
         const row = [
           escapeCsvField(acc.username),
           escapeCsvField(acc.password),
@@ -937,10 +1029,10 @@ HazelLavaMaster50:Generated$4578609</textarea>
       return rows.join('\r\n');
     }
 
-    function buildTsvForGoogleSheets() {
+    function buildTsvForGoogleSheets(list = parsedAccounts) {
       const header = ['username', 'password', 'cookie', 'status', 'created', 'checked', 'note'].join('\t');
       const rows = [header];
-      for (const acc of parsedAccounts) {
+      for (const acc of list) {
         const row = [
           acc.username || '',
           acc.password || '',
@@ -970,15 +1062,20 @@ HazelLavaMaster50:Generated$4578609</textarea>
 
       standaloneCookies = rawCookiesFromBox.map((ck, index) => {
         const meta = extractCookieMeta(ck);
+        // ค้นหารหัสผ่านจากช่องแรกถ้าชื่อตรงกัน
+        const matchedAcc = meta.uname
+          ? accountsFromInput.find(a => a.username && a.username.toLowerCase() === meta.uname.toLowerCase())
+          : null;
         return {
           index: index + 1,
           cookie: ck,
-          uname: meta.uname,
+          uname: meta.uname || (matchedAcc ? matchedAcc.username : ''),
+          password: matchedAcc ? matchedAcc.password : '',
           uid: meta.uid
         };
       });
 
-      // จับคู่ Cookie จากช่องที่ 2 เข้ากับรายการบัญชี (จับคู่ตามชื่อผู้ใช้ก่อน หรือจับคู่ตามลำดับถ้าไม่มีชื่อ)
+      // จับคู่ Cookie จากช่องที่ 2 เข้ากับรายการบัญชี
       const usedCookieIndices = new Set();
 
       for (const acc of accountsFromInput) {
@@ -994,28 +1091,39 @@ HazelLavaMaster50:Generated$4578609</textarea>
         }
       }
 
-      // หากยังมี Cookie ที่ไม่ได้จับคู่ และมีบัญชีที่ยังไม่มี Cookie (และ Cookie นั้นไม่มี uname หรือชื่อไม่ตรง)
       for (let i = 0; i < standaloneCookies.length; i++) {
         if (usedCookieIndices.has(i)) continue;
         const ckObj = standaloneCookies[i];
-
-        // ถ้า Cookie มีชื่อผู้ใช้ที่ตรงกับบัญชีที่มีอยู่แล้ว แต่บัญชีนั้นมี Cookie ไปแล้ว (เช่น กรณีวาง Cookie ซ้ำ 3 อัน)
-        // ให้เพิ่มเป็นแถวใหม่ หรือถ้ายังไม่มีบัญชีชื่อนั้นเลยก็เพิ่มเข้าในรายการ
         resultsPushCookie(accountsFromInput, ckObj);
         usedCookieIndices.add(i);
       }
 
       parsedAccounts = accountsFromInput;
 
-      // Render ส่วนแสดง Cookie ที่แยกออกมาจาก _|WARNING:-DO-NOT-SHARE-THIS
+      // Render ส่วนแสดง Cookie ที่แยกออกมา
       if (standaloneCookies.length > 0) {
         cookieSection.style.display = 'block';
         cookieCountBadge.textContent = `แยกได้ ${standaloneCookies.length} Cookie`;
+
+        cookieSheetTableBody.innerHTML = standaloneCookies.map((item) => `
+          <tr>
+            <td style="color: var(--text-muted);">${item.index}</td>
+            <td>${escapeHtml(item.uname || '-')}</td>
+            <td>${escapeHtml(item.password || '-')}</td>
+            <td title="${escapeHtml(item.cookie)}">${escapeHtml(item.cookie)}</td>
+            <td>
+              <button type="button" class="btn btn-amber copy-item-btn" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" data-value="${escapeHtml(item.cookie)}">
+                📋 คัดลอก
+              </button>
+            </td>
+          </tr>
+        `).join('');
+
         separatedCookieList.innerHTML = standaloneCookies.map((item) => `
           <div class="account-card">
             <div class="account-index">
               <span>🍪 Cookie ชิ้นที่ #${item.index}</span>
-              ${item.uname ? `<span style="color: #60a5fa;">👤 ตรวจพบชื่อใน Cookie: <strong>${escapeHtml(item.uname)}</strong> ${item.uid ? `(UID: ${escapeHtml(item.uid)})` : ''}</span>` : ''}
+              ${item.uname ? `<span style="color: #60a5fa;">👤 ชื่อบัญชี: <strong>${escapeHtml(item.uname)}</strong> ${item.uid ? `(UID: ${escapeHtml(item.uid)})` : ''}</span>` : ''}
             </div>
             <div class="field-box">
               <div class="field-row">
@@ -1030,6 +1138,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
       } else {
         cookieSection.style.display = 'none';
         separatedCookieList.innerHTML = '';
+        cookieSheetTableBody.innerHTML = '';
       }
 
       countBadge.textContent = `${parsedAccounts.length} รายการ`;
@@ -1054,7 +1163,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
       if (parsedAccounts.length === 0) {
         accountList.innerHTML = `
           <div class="empty-state">
-            ยังไม่มีข้อมูล กรุณาวางรหัสหรือวาง Cookie ในช่องด้านบน
+            ยังไม่มีข้อมูล กรุณาวางรหัสหรือเปิดไฟล์ Sheet (.CSV) ในช่องด้านบน
           </div>
         `;
       } else {
@@ -1062,7 +1171,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
           <div class="account-card">
             <div class="account-index">
               <span>ลำดับที่ #${idx + 1}</span>
-              ${acc.cookie ? `<span style="color: #fbbf24;">🍪 มี Cookie พร้อมส่งออก</span>` : ''}
+              ${acc.cookie ? `<span style="color: #fbbf24;">🍪 มี Cookie สะอาดพร้อมใช้งาน</span>` : ''}
             </div>
             <div class="fields-grid">
               <div class="field-box">
@@ -1092,7 +1201,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
             ${acc.cookie ? `
               <div class="field-box" style="margin-top: 0.75rem;">
                 <div class="field-label">
-                  <span class="tag-cookie">🍪 Cookie (แยกจาก _|WARNING:-DO-NOT-SHARE-THIS)</span>
+                  <span class="tag-cookie">🍪 Cookie (ตัดส่วนเกินออกแล้ว)</span>
                 </div>
                 <div class="field-row">
                   <div class="field-value cookie-value">${escapeHtml(acc.cookie)}</div>
@@ -1115,7 +1224,6 @@ HazelLavaMaster50:Generated$4578609</textarea>
     }
 
     function resultsPushCookie(accountsList, ckObj) {
-      // หากมีบัญชีชื่อเดียวกันอยู่แล้ว ให้คัดลอกรหัสผ่านมาใส่คู่กับ Cookie ชิ้นนี้ด้วย หรือสร้างแถวใหม่
       const existingAcc = ckObj.uname
         ? accountsList.find(a => a.username && a.username.toLowerCase() === ckObj.uname.toLowerCase())
         : null;
@@ -1154,18 +1262,78 @@ HazelLavaMaster50:Generated$4578609</textarea>
       rawInput.focus();
     });
 
+    // ปุ่มเปิดไฟล์ Sheet ของ Cookie (.CSV)
+    openCookieSheetBtn.addEventListener('click', () => {
+      cookieSheetFileInput.click();
+    });
+
+    cookieSheetFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const baseName = file.name.replace(/\.[^/.]+$/, '');
+      if (baseName) {
+        csvFilename.value = baseName;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target.result || '';
+        // สกัดเอาเฉพาะ Cookie ล้วนๆ มาใส่ในช่อง Cookie
+        const extractedCookies = splitCookiesByWarning(content);
+        cookieInput.value = extractedCookies.join('\n');
+
+        // พร้อมทั้งดึงชื่อและรหัสจากไฟล์ CSV นั้นมาจับคู่ในช่องรหัสด้วย (ถ้ามี)
+        const lines = content.split(/\r?\n/);
+        const userPassLines = [];
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          const unquoted = trimmed.replace(/"/g, '').toLowerCase();
+          if (unquoted.startsWith('username,password')) continue;
+          if (trimmed.includes(',')) {
+            const cols = parseCsvRow(trimmed);
+            const u = (cols[0] || '').replace(/^"+|"+$/g, '').trim();
+            const p = (cols[1] || '').replace(/^"+|"+$/g, '').trim();
+            if (u && !u.startsWith('_|')) {
+              userPassLines.push(p ? `${u}:${p}` : u);
+            }
+          }
+        }
+        if (userPassLines.length > 0) {
+          rawInput.value = userPassLines.join('\n');
+        }
+
+        cookieSheetPreviewBox.style.display = 'block';
+        toggleCookieSheetViewBtn.innerHTML = '🙈 ซ่อนตาราง Sheet ของ Cookie';
+
+        render();
+        showToast(`เปิด Sheet Cookie (${extractedCookies.length} Cookie) เรียบร้อย!`);
+        cookieSheetFileInput.value = '';
+      };
+      reader.readAsText(file, 'utf-8');
+    });
+
     pasteCookieBtn.addEventListener('click', async () => {
       try {
         const text = await navigator.clipboard.readText();
         if (text) {
-          cookieInput.value = text;
+          const cleanList = splitCookiesByWarning(text);
+          cookieInput.value = cleanList.length > 0 ? cleanList.join('\n') : text;
           render();
-          showToast('วางและแยก Cookie เรียบร้อยแล้ว!');
+          showToast('วางและตัดข้อความส่วนเกินออกจาก Cookie แล้ว!');
         }
       } catch {
         cookieInput.focus();
         showToast('กรุณากด Ctrl+V ในช่อง Cookie');
       }
+    });
+
+    cleanCookieBoxBtn.addEventListener('click', () => {
+      const cleanList = splitCookiesByWarning(cookieInput.value);
+      cookieInput.value = cleanList.join('\n');
+      render();
+      showToast(`ล้างข้อความส่วนเกินออกแล้ว! (${cleanList.length} Cookie)`);
     });
 
     dedupeCookieBtn.addEventListener('click', () => {
@@ -1198,13 +1366,59 @@ HazelLavaMaster50:Generated$4578609</textarea>
       const reader = new FileReader();
       reader.onload = (event) => {
         const content = event.target.result || '';
-        const current = rawInput.value.trim();
-        rawInput.value = current ? `${current}\n${content.trim()}` : content.trim();
+        rawInput.value = content.trim();
+        const cookiesInFile = splitCookiesByWarning(content);
+        if (cookiesInFile.length > 0) {
+          cookieInput.value = cookiesInFile.join('\n');
+        }
         render();
-        showToast(`นำเข้าไฟล์ ${file.name} เรียบร้อยแล้ว!`);
+        showToast(`เปิดไฟล์ ${file.name} เรียบร้อยแล้ว!`);
         csvFileInput.value = '';
       };
       reader.readAsText(file, 'utf-8');
+    });
+
+    toggleCookieSheetViewBtn.addEventListener('click', () => {
+      const isHidden = cookieSheetPreviewBox.style.display === 'none';
+      cookieSheetPreviewBox.style.display = isHidden ? 'block' : 'none';
+      toggleCookieSheetViewBtn.innerHTML = isHidden
+        ? '🙈 ซ่อนตาราง Sheet ของ Cookie'
+        : '📊 เปิดดูตาราง Sheet ของ Cookie';
+    });
+
+    copyCookieSheetTsvBtn.addEventListener('click', () => {
+      if (standaloneCookies.length === 0) return;
+      const header = ['username', 'password', 'cookie'].join('\t');
+      const rows = standaloneCookies.map(c => [c.uname || '', c.password || '', c.cookie].join('\t'));
+      copyText([header, ...rows].join('\r\n'), copyCookieSheetTsvBtn, 'พร้อมวางใน Sheet!');
+    });
+
+    downloadCookieCsvBtn.addEventListener('click', () => {
+      if (standaloneCookies.length === 0) {
+        showToast('ยังไม่มีข้อมูล Cookie สำหรับส่งออก!');
+        return;
+      }
+      const list = standaloneCookies.map(c => ({
+        username: c.uname || '',
+        password: c.password || '',
+        cookie: c.cookie,
+        status: '',
+        created: '',
+        checked: '',
+        note: ''
+      }));
+      const csvContent = buildCsvContent(list);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const name = (csvFilename.value || '11').trim().replace(/\.csv$/i, '');
+      a.href = url;
+      a.download = `${name}_cookies.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`ดาวน์โหลดไฟล์ ${name}_cookies.csv เรียบร้อย!`);
     });
 
     downloadCsvBtn.addEventListener('click', () => {
@@ -1246,7 +1460,7 @@ HazelLavaMaster50:Generated$4578609</textarea>
     togglePreviewBtn.addEventListener('click', () => {
       csvPreviewBox.classList.toggle('active');
       const isOpen = csvPreviewBox.classList.contains('active');
-      togglePreviewBtn.innerHTML = isOpen ? '🙈 ซ่อนตัวอย่างตาราง' : '👁️ ดูตัวอย่างตาราง';
+      togglePreviewBtn.innerHTML = isOpen ? '🙈 ซ่อนตัวอย่างตารางรวม' : '👁️ ดูตัวอย่างตารางรวม';
     });
 
     copyAllUsersBtn.addEventListener('click', () => {
